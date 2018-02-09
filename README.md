@@ -20,10 +20,11 @@ $ cd api
 ```
 - Install das dependências de build e dev dentro do repo clonado (no exemplo anterior, /home/projects/projetoX/api)
 ```
-$ yarn
+$ yarn // ou npm install
 ```
 
 - Transpile e rode o server
 ```
-$ tsc -w && ./node_modules/bin/nodemon dist/index.js
+$ tsc -w 
+$ yarn start // ou npm start
 ```

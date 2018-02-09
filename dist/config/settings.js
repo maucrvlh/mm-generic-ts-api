@@ -12,7 +12,7 @@ function settings() {
     var r = {
         system: {
             name: 'TJAM API genérica',
-            APIid: 'tjam-generic-es7-api',
+            APIid: 'tjam-generic-ts-api',
             v: 'v1',
             basePath: '/api',
             docPath: '/doc',
