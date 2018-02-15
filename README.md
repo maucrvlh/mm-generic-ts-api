@@ -11,13 +11,27 @@
 * Escrito em TypeScript 2+
 
 
-## Utilização
+## Fork
 - Clone o repositório
 ```
-$ mkdir -p /home/projects/projetoX && cd /home/projects/projetoX
+$ mkdir -p /home/projects/projetoX
+$ cd /home/projects/projetoX
 $ git clone <repo> api
 $ cd api
 ```
+- Adicione o endereço do seu projeto e o endereço do Projeto Base
+```
+$ git remote rm origin
+$ git remote add origin <seu_projeto.git>
+$ git remote add upstream <url_do_projeto_original.git>
+```
+- Atualizando seu projeto com base no projeto original
+```
+$ git fetch upstream
+$ git checkout master
+$ git merge upstream/master
+```
+
 - Install das dependências de build e dev dentro do repo clonado (no exemplo anterior, /home/projects/projetoX/api)
 ```
 $ yarn // ou npm install
