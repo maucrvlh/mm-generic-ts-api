@@ -6,7 +6,9 @@
 
 
 ## Minitutorial rápido
-* 1 - clone o repositório do projeto na sua máquina
+* 0 - no local de sua preferência, cria um diretório para o projeto (exemplo: /home/usuario/projects/projeto_nodejs_tjam)
+
+* 1 - clone o repositório do projeto na sua máquina no diretório do projeto criado anteriormente
 
 * 2 - faça a instalação do driver db2 conforme as instruções em [TJAM Node DB2 Helper](http://git.tjam.jus.br/local-node-modules/tjam-node-db2-helper)
 
@@ -27,7 +29,21 @@
     $ yarn
     ```
 
-* 6 - após o término das instalações dos pacotes, rode o projeto:
+* 6 - baixe o repositório do path shared que está em http://git.tjam.jus.br/scaffolding/tjam-generic-shared-itens com o nome `shared` no diretório do PROJETO, e não da API. Exemplo:
+    ```
+    $ cd /home/usuario/projects/projeto_nodejs_tjam
+    $ git clone http://git.tjam.jus.br/scaffolding/tjam-generic-shared-itens shared
+    ```
+
+* 7 - baixe o repositório de itens de suporte de APIs que está em http://git.tjam.jus.br/SupportServices/shared. Preferencialmente fora do projeto, com o nome `support` ou outro de sua preferência. Exemplo:
+    ```
+    $ cd /home/usuario/projects/
+    $ git clone http://git.tjam.jus.br/SupportServices/shared support
+    ```
+
+* 8 - dentro do projeto, dentro da API, no arquivo `src/config/settings.ts`, ajuste as linhas 119, 120, 131 e 134 apontando para o diretório correto configurado no item anterior.
+
+* 9 - após o término das instalações dos pacotes, rode o projeto:
     ```
     $ npm run start
     ou
