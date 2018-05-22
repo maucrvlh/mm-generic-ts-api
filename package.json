@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon dist/index.js"
+    "start": "concurrently --kill-others --names \"tsc-watch,nodemon\" \"tsc -w\" \"echo 'Inicializando nodemon em 5s...' && sleep 5 && nodemon dist/index.js\""
   },
   "license": "MIT",
   "devDependencies": {
@@ -11,7 +11,7 @@
     "@types/helmet": "^0.0.37",
     "@types/knex": "^0.0.65",
     "@types/method-override": "^0.0.31",
-    "@types/morgan": "^1.7.35",
+    "concurrently": "^3.5.1",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "typescript": "^2.6.2"
@@ -19,13 +19,16 @@
   "dependencies": {
     "@types/node": "^8.0.30",
     "body-parser": "^1.18.2",
-    "consign": "^0.1.6",
     "express": "^4.16.2",
     "helmet": "^3.9.0",
     "knex": "^0.14.2",
     "method-override": "^2.3.10",
-    "morgan": "^1.9.0",
     "sqlite3": "^3.1.13",
+    "tjam-node-db2-helper": "http://git.tjam.jus.br/local-node-modules/tjam-node-db2-helper.git#v1.0.1",
+    "tjam-node-exceptions": "http://git.tjam.jus.br/local-node-modules/tjam-node-exceptions.git#v1.0.4",
+    "tjam-node-log-utils": "http://git.tjam.jus.br/local-node-modules/tjam-node-log-utils.git#v1.0.1",
+    "tjam-node-pg-helper": "http://git.tjam.jus.br/local-node-modules/tjam-node-pg-helper.git#v1.0.1",
+    "tjam-node-toolbox": "http://git.tjam.jus.br/local-node-modules/tjam-node-toolbox.git#v1.0.0",
     "unirest": "^0.5.1"
   }
 }

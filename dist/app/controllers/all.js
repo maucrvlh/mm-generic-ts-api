@@ -2,19 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var settings_1 = require("../../config/settings");
 var constants_1 = require("../../config/constants");
+var tjam_node_exceptions_1 = require("tjam-node-exceptions");
+var tjam_node_toolbox_1 = require("tjam-node-toolbox");
 var unirest = require('unirest');
-var InvalidHttpMethodException = require(settings_1.default().support + '/exceptions/InvalidHttpMethodException');
-var InvalidHttpHeaderException = require(settings_1.default().support + '/exceptions/InvalidHttpHeaderException');
-var InvalidRequestException = require(settings_1.default().support + '/exceptions/InvalidRequestException');
-var PageNotFoundException = require(settings_1.default().support + '/exceptions/PageNotFoundException');
-var MissingTokenException = require(settings_1.default().support + '/exceptions/MissingTokenException');
-var MissingHttpHeaderException = require(settings_1.default().support + '/exceptions/MissingHttpHeaderException');
-var ConnectionErrorException = require(settings_1.default().support + '/exceptions/ConnectionErrorException');
-var GenericErrorException = require(settings_1.default().support + '/exceptions/GenericErrorException');
-var AllowedGroupNotFoundException = require(settings_1.default().support + '/exceptions/AllowedGroupNotFoundException');
-var AllowedUserNotFoundException = require(settings_1.default().support + '/exceptions/AllowedUserNotFoundException');
-var encoders = require(settings_1.default().support + '/helpers/encoders');
-var extract = function (headers) {
+function extract(headers) {
     if (headers && headers.authorization) {
         var parted = headers.authorization.split(' ');
         if (parted.length === 2) {
@@ -27,7 +18,7 @@ var extract = function (headers) {
     else {
         return { success: false, err: constants_1.default.MISSING_HTTP_HEADER };
     }
-};
+}
 function welcome(req, res, next) {
     var doc = settings_1.default().system.basePath + "/" + settings_1.default().system.v + settings_1.default().system.docPath;
     res.status(200).json({ status: 'success', api: settings_1.default().system.APIid, description: "Bem vindo. Consulte a documenta\u00E7\u00E3o em '" + doc + "'." });
@@ -40,9 +31,9 @@ exports.documentation = documentation;
 function login(req, res, next) {
     if (!req.query.mode || req.query.mode != 'guest') {
         if (req.method.toLowerCase() !== 'post')
-            return next(new InvalidHttpMethodException('O método HTTP utilizado para o login deve ser POST.'));
+            return next(new tjam_node_exceptions_1.InvalidHttpMethodException('O método HTTP utilizado para o login deve ser POST.'));
         if ((!req.body.username || !req.body.password) && !req.body.credentials)
-            return next(new InvalidRequestException('Informe seu login e senha de rede.'));
+            return next(new tjam_node_exceptions_1.InvalidRequestException('Informe seu login e senha de rede.'));
     }
     var uri = settings_1.default().auth.base + settings_1.default().auth.routes.login;
     var mode = req.query.mode == 'guest' ? 4 : req.body.mode || 1;
@@ -56,7 +47,7 @@ function login(req, res, next) {
         if (response.error)
             return res.status(response.statusCode || 500).json(response.body);
         if (!response.body)
-            return next(new InvalidRequestException(response, 500));
+            return next(new tjam_node_exceptions_1.InvalidRequestException(response, 500));
         if (settings_1.default().permissions) {
             if (settings_1.default().permissions.access) {
                 if (settings_1.default().permissions.access.groups && settings_1.default().permissions.access.groups.length > 0) {
@@ -64,15 +55,15 @@ function login(req, res, next) {
                     memberOf = Array.isArray(memberOf) ? memberOf : [memberOf];
                     memberOf = memberOf.map(function (el, i, a) { return el.split(',')[0].split('=')[1]; });
                     if (!(memberOf.some(function (el, i, a) { return !!~settings_1.default().permissions.access.groups.indexOf(el); })))
-                        return next(new AllowedGroupNotFoundException(response, 500));
+                        return next(new tjam_node_exceptions_1.LDAPAllowedGroupException(response, 500));
                 }
                 if (settings_1.default().permissions.access.users && settings_1.default().permissions.access.users.length > 0) {
                     if (!~settings_1.default().permissions.access.users.indexOf(response.body.user.username))
-                        return next(new AllowedUserNotFoundException());
+                        return next(new tjam_node_exceptions_1.LDAPDeniedAccessException());
                 }
             }
         }
-        var encoded = encoders.b64o(Buffer.from(JSON.stringify({ _: encoders.b64o(response.body.token) }), 'ascii').toString('base64'));
+        var encoded = tjam_node_toolbox_1.Base64.obfuscate(Buffer.from(JSON.stringify({ _: tjam_node_toolbox_1.Base64.obfuscate(response.body.token) }), 'ascii').toString('base64'));
         var json = req.query.mode == 'guest' ? { status: 'success', '_': encoded } : { status: 'success', username: response.body.user.username, displayName: (response.body.user.ldapData[0].givenName || response.body.user.ldapData[0].displayName || response.body.user.username), '_': encoded };
         res.status(response.statusCode || 200).json(json);
     });
@@ -85,13 +76,13 @@ function verify(req, res, next) {
     if (!extracted.success) {
         switch (extracted.err) {
             case constants_1.default.INVALID_HTTP_HEADER:
-                next(new InvalidHttpHeaderException());
+                next(new tjam_node_exceptions_1.InvalidHttpHeaderException());
                 break;
             case constants_1.default.MISSING_HTTP_HEADER:
-                next(new MissingHttpHeaderException);
+                next(new tjam_node_exceptions_1.MissingHttpHeaderException);
                 break;
             default:
-                next(new MissingTokenException('Esta requisição necessita de um token de autenticação.', 401));
+                next(new tjam_node_exceptions_1.MissingTokenException('Esta requisição necessita de um token de autenticação.', 401));
         }
         return;
     }
@@ -108,7 +99,7 @@ function verify(req, res, next) {
             return res.status(response.statusCode || 500).json(response.body);
         }
         if (!response.body)
-            return next(new InvalidRequestException(response, 500));
+            return next(new tjam_node_exceptions_1.InvalidRequestException(response, 500));
         if (response.body.success && response.body.isLoggedIn) {
             req.userLoggedIn = response.body.details.username;
             next();
@@ -128,13 +119,13 @@ function logout(req, res, next) {
     if (!extracted.success) {
         switch (extracted.err) {
             case constants_1.default.INVALID_HTTP_HEADER:
-                next(new InvalidHttpHeaderException());
+                next(new tjam_node_exceptions_1.InvalidHttpHeaderException());
                 break;
             case constants_1.default.MISSING_HTTP_HEADER:
-                next(new MissingHttpHeaderException);
+                next(new tjam_node_exceptions_1.MissingHttpHeaderException());
                 break;
             default:
-                next(new MissingTokenException('Esta requisição necessita de um token de autenticação.', 401));
+                next(new tjam_node_exceptions_1.MissingTokenException('Esta requisição necessita de um token de autenticação.', 401));
         }
         return;
     }
@@ -148,7 +139,7 @@ function logout(req, res, next) {
         if (response.error)
             return res.status(response.statusCode).json(response.body);
         if (!response.body)
-            return next(new InvalidRequestException(response, 500));
+            return next(new tjam_node_exceptions_1.InvalidRequestException(response, 500));
         if (response.body.success && !response.body.isLoggedIn) {
             delete req.userLoggedIn;
             res.status(200).json({ status: 'success' });
@@ -160,16 +151,28 @@ function logout(req, res, next) {
     });
 }
 exports.logout = logout;
-function session(req, res, next) {
-    res.status(200).json({ status: 'success' });
-}
-exports.session = session;
 exports.invalidEndpoint = {
     detailed: function (error, req, res, next) {
-        res.status(error.code || 500).json({ status: 'error', message: error.message, details: { exception: error.type, code: error.code, stack: error.stack, more: error.more ? error.more : '--' } });
+        res.status(error.code || 500).json({
+            status: 'error',
+            message: error.msg ? error.msg : error.message,
+            details: {
+                exception: error.details.exception ? error.details.exception : error.type,
+                code: error.details.code ? error.details.code : error.code,
+                stack: error.details.stack ? error.details.stack : error.stack,
+                more: error.details.more ? error.details.more : '--'
+            }
+        });
     },
     concise: function (error, req, res, next) {
-        res.status(error.code || 500).json({ status: 'error', message: error.message, details: { exception: error.type, code: error.code, more: error.more ? error.more : '--' } });
+        res.status(error.code || 500).json({
+            status: 'error',
+            message: error.msg ? error.msg : error.message,
+            details: {
+                exception: error.details.exception ? error.details.exception : error.type,
+                code: error.details.code ? error.details.code : error.code
+            }
+        });
     }
 };
-//# sourceMappingURL=commons.js.map
+//# sourceMappingURL=all.js.map

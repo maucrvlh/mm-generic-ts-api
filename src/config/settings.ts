@@ -10,11 +10,7 @@ interface BasicSettings {
 		enableProxy: boolean;
 		loginRequired: boolean;
 		debug: boolean;
-		db?: {
-			host?: string;
-			name?: string;
-			conn?: string;
-		};
+		db?: { [key: string]: { host?: string; name?: string; conn?: { [key: string]: string } } };
 		sessionName: string;
 	};
 	auth?: AuthSettings;
@@ -64,6 +60,11 @@ interface AuthSettings {
 	}
 }
 
+
+// Configurações gerais da API
+// Aqui são definidos o nome da API, a APIid (aquela que aparece no log)
+// e serve para encontrar a API nas requisições, a identificação da sessão
+// no servidor Redis e as configurações de banco de dados.
 export default function settings() {
 	let r: BasicSettings = { 
 		system: {
@@ -95,8 +96,8 @@ export default function settings() {
 	};
 	
 	if (process.env.NODE_ENV == 'production') {
-		r.support = '/home/support';
-		r.auth = require('/home/support/config/envs').auth.production;
+		r.support = '/opt/node/services/support/';
+		r.auth = require('/opt/node/services/support/config/envs').auth.production;
 		r.permissions = {
 			...r.permissions,
 			consumer: {
@@ -106,9 +107,12 @@ export default function settings() {
 		r.system = {
 			...r.system,
 			db: {
-				host: 'localhost',
-				name: 'generic',
-				conn: require('/home/support/config/envs').db2.production.localhost
+				saj: {
+					conn: require('/opt/node/services/support/config/envs').db2.production.localhost
+				},
+				projudi: {					
+					conn: require('/opt/node/services/support/config/envs').pg.production.projudi
+				}
 			}
 		}
 	} else {
@@ -123,9 +127,12 @@ export default function settings() {
 		r.system = {
 			...r.system,
 			db: {
-				host: 'localhost',
-				name: 'generic',
-				conn: require('/home/mauricio/dev/env/projects/support/config/envs').db2.development.localhost
+				saj: {
+					conn: require('/home/mauricio/dev/env/projects/support/config/envs').db2.development.localhost
+				},
+				projudi: {					
+					conn: require('/home/mauricio/dev/env/projects/support/config/envs').pg.development.projudi
+				}
 			}
 		}
 	}

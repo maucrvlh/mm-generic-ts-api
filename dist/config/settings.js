@@ -38,15 +38,18 @@ function settings() {
         }
     };
     if (process.env.NODE_ENV == 'production') {
-        r.support = '/home/support';
-        r.auth = require('/home/support/config/envs').auth.production;
+        r.support = '/opt/node/services/support/';
+        r.auth = require('/opt/node/services/support/config/envs').auth.production;
         r.permissions = __assign({}, r.permissions, { consumer: {
                 hostnames: []
             } });
         r.system = __assign({}, r.system, { db: {
-                host: 'localhost',
-                name: 'generic',
-                conn: require('/home/support/config/envs').db2.production.localhost
+                saj: {
+                    conn: require('/opt/node/services/support/config/envs').db2.production.localhost
+                },
+                projudi: {
+                    conn: require('/opt/node/services/support/config/envs').pg.production.projudi
+                }
             } });
     }
     else {
@@ -56,9 +59,12 @@ function settings() {
                 hostnames: []
             } });
         r.system = __assign({}, r.system, { db: {
-                host: 'localhost',
-                name: 'generic',
-                conn: require('/home/mauricio/dev/env/projects/support/config/envs').db2.development.localhost
+                saj: {
+                    conn: require('/home/mauricio/dev/env/projects/support/config/envs').db2.development.localhost
+                },
+                projudi: {
+                    conn: require('/home/mauricio/dev/env/projects/support/config/envs').pg.development.projudi
+                }
             } });
     }
     return r;

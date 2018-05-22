@@ -2,35 +2,44 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var bodyParser = require("body-parser");
-var morgan = require("morgan");
 var helmet = require("helmet");
 var methodOverride = require("method-override");
-var knex = require("knex");
+var utils = require("tjam-node-log-utils");
 var settings_1 = require("./settings");
-var constants_1 = require("./constants");
-var all_js_1 = require("../app/routes/all.js");
-var utils = require(settings_1.default().support + '/utils/log-utils')(settings_1.default());
-var security = require(settings_1.default().support + '/utils/security')(settings_1.default());
+var all = require("../app/routes/all.js");
+var all_1 = require("../app/controllers/all");
+var tjam_node_exceptions_1 = require("tjam-node-exceptions");
 function default_1() {
     var app = express();
-    morgan.format('custom', '[:date[web]] :method :url - :status - :response-time ms - :user-agent');
+    utils.setSettings(settings_1.default());
     app.enable('trust proxy');
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
-    app.use(morgan('custom'));
     app.use(methodOverride());
     app.use(helmet());
     app.disable('X-powered-by');
-    app.use(security.ensureEnabledConsumers);
-    Object.assign(app, {
-        main: knex({
-            client: 'sqlite3',
-            connection: {
-                filename: '../shared/db/database.db'
+    app.use(utils.plugin);
+    app.use(function (req, res, next) {
+        if (settings_1.default().permissions) {
+            if (settings_1.default().permissions.consumer) {
+                if (settings_1.default().permissions.consumer.hostnames && settings_1.default().permissions.consumer.hostnames.length > 0) {
+                    if (!req.get('referrer') || !(settings_1.default().permissions.consumer.hostnames.some(function (el, i, a) { return !!~req.get('referrer').indexOf(el); })))
+                        return next(new tjam_node_exceptions_1.ConsumerNotAllowedException());
+                }
             }
-        })
+        }
+        next();
     });
-    app.use('/', all_js_1.default(app, constants_1.default.v1));
+    app.use('/', all.v1.routes());
+    app.use('/', all.v2.routes());
+    app.use(function (req, res, next) {
+        var err = new tjam_node_exceptions_1.PageNotFoundException('O REST end point não pôde ser encontrado. Consulte a documentação em /docs.', 404);
+        next(err);
+    });
+    if (process.env.NODE_ENV === 'development') {
+        app.use(all_1.invalidEndpoint.detailed);
+    }
+    app.use(all_1.invalidEndpoint.concise);
     return app;
 }
 exports.default = default_1;

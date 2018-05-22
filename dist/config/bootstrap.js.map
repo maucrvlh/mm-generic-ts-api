@@ -1,0 +1,1 @@
+{"version":3,"file":"bootstrap.js","sourceRoot":"","sources":["../../src/config/bootstrap.ts"],"names":[],"mappings":";;AAAA,2BAA6B;AAE7B,IAAI,MAAY,CAAC;AAEjB;IACI,MAAM,GAAG,IAAI,CAAC;QACV,MAAM,EAAE,SAAS;QACjB,UAAU,EAAE;YACR,QAAQ,EAAE,2BAA2B;SACxC;KACJ,CAAC,CAAC;AACP,CAAC;AAPD,gDAOC;AAED;IACI,MAAM,CAAC,MAAM,CAAC;AAClB,CAAC;AAFD,4BAEC"}

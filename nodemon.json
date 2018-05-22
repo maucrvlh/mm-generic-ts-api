@@ -1,0 +1,5 @@
+{
+  "env": {
+    "LD_LIBRARY_PATH": "/home/mauricio/dev/env/projects/support/libs/db2/drivers/ibm/clidriver/lib"
+  }
+}
