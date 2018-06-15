@@ -31,7 +31,7 @@
     ```
     💬 Depois execute, para atualizar a linha de comando
     ```
-    . $! //ou 
+    . $! //ou Precisa ser exatamente o proximo comando executado na linha de comando
     source .bash_profile //ou 
     . .bash_profile
     ```
