@@ -1,49 +1,62 @@
-<h1 align="center">TJAM generic TS API</h1>
+<h1 align="center">TJAM - Web Services Apps</h1>
 
 ---
 
-:fire: Estrutura base de APIs Node.js internas do TJAM.
+:fire: Estrutura base do Web Services Apps TJAM
 
 
 ## Minitutorial rápido
-* 0 - no local de sua preferência, cria um diretório para o projeto (exemplo: /home/usuario/projects/projeto_nodejs_tjam)
+0. - no local de sua preferência, cria um diretório para o projeto (exemplo: /home/usuario/projects/projeto_nodejs_tjam)
 
-* 1 - clone o repositório do projeto na sua máquina no diretório do projeto criado anteriormente
+1. - clone o repositório do projeto na sua máquina no diretório do projeto criado anteriormente
 
-* 2 - faça a instalação do driver db2 conforme as instruções em [TJAM Node DB2 Helper](http://git.tjam.jus.br/local-node-modules/tjam-node-db2-helper)
+2. - faça a instalação do driver db2 conforme as instruções em [TJAM Node DB2 Helper](http://git.tjam.jus.br/local-node-modules/tjam-node-db2-helper)
 
-* 3 - crie uma variável de ambiente `IBM_DB_HOME` apontando para o local onde você baixou o driver db2, exemplo:
+3. - crie algumas variáveis de ambiente no seu arquivo ".bash_profile" (geralmente localizado em $HOME ou /Users/{SeuUsuario}), é só escrever esses exports no arquivo e salvar. 
+    1. `IBM_DB_HOME` apontando para o local onde você baixou o driver db2, exemplo:
     ```
-    export IBM_DB_HOME=/home/mauricio/dev/env/projects/support/libs/db2/drivers/ibm/clidriver
+    export IBM_DB_HOME={DIRETORIO DO DRIVER DB2}/ibm/clidriver
     ```
-
-* 4 - abra o arquivo `nodemon.json` deste projeto e altere o apontamento de `LD_LIBRARY_PATH` para o local onde você baixou o driver db2, seguido do diretório `lib`, exemplo:
+    2. `LD_LIBRARY_PATH` para o local onde você baixou o driver db2, seguido do diretório `lib`, exemplo:
     ```
-    "LD_LIBRARY_PATH": "/home/mauricio/dev/env/projects/support/libs/db2/drivers/ibm/clidriver/lib"
+    export LD_LIBRARY_PATH=$IBM_DB_HOME/lib
     ```
-
-* 5 - na raiz do projeto, execute:
+    3. `SHARED_CONNS_DEV`
+    ```
+    export SHARED_CONNS_DEV={DIRETORIO DO SHARED QUE GUARDA AS CONEXOES - NA SUA MAQUINA}/shared
+    ```
+    4. `SHARED_CONNS_PROD`
+    ```
+    export SHARED_CONNS_PROD={DIRETORIO DO SHARED NO SERVIDOR DE PRODUCAO}/shared
+    ```
+    💬 Depois execute, para atualizar a linha de comando
+    ```
+    . $! //ou Precisa ser exatamente o proximo comando executado na linha de comando
+    source .bash_profile //ou 
+    . .bash_profile
+    ```
+5. - na raiz do projeto, execute:
     ```
     $ npm install 
     ou
     $ yarn
     ```
 
-* 6 - baixe o repositório do path shared que está em http://git.tjam.jus.br/scaffolding/tjam-generic-shared-itens com o nome `shared` no diretório do PROJETO, e não da API. Exemplo:
+6. - baixe o repositório do path shared que está em http://git.tjam.jus.br/scaffolding/tjam-generic-shared-itens com o nome `shared` no diretório do PROJETO, e não da API. Exemplo:
     ```
     $ cd /home/usuario/projects/projeto_nodejs_tjam
     $ git clone http://git.tjam.jus.br/scaffolding/tjam-generic-shared-itens shared
     ```
 
-* 7 - baixe o repositório de itens de suporte de APIs que está em http://git.tjam.jus.br/SupportServices/shared. Preferencialmente fora do projeto, com o nome `support` ou outro de sua preferência. Exemplo:
+7. - baixe o repositório de itens de suporte de APIs que está em http://git.tjam.jus.br/SupportServices/shared. Preferencialmente fora do projeto, com o nome `support` ou outro de sua preferência. Exemplo:
     ```
     $ cd /home/usuario/projects/
     $ git clone http://git.tjam.jus.br/SupportServices/shared support
     ```
 
-* 8 - dentro do projeto, dentro da API, no arquivo `src/config/settings.ts`, ajuste as linhas 119, 120, 131 e 134 apontando para o diretório correto configurado no item anterior.
+8. - dentro do projeto, dentro da API, no arquivo `src/config/settings.ts`, ajuste as linhas 119, 120, 131 e 134 apontando para o diretório correto configurado no item anterior.
 
-* 9 - após o término das instalações dos pacotes, rode o projeto:
+9. - após o término das instalações dos pacotes, rode o projeto:
     ```
     $ npm run start
     ou
