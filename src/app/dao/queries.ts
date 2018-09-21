@@ -31,6 +31,10 @@ export default {
                         P.FLTIPOCLASSE NOT IN (5) AND 
                         P.NUPROCESSO = ':processo'
                     ORDER BY PARTE.TPPARTE, PARTE.NUSEQPARTE, PARTE.NUSEQPARTEREFER DESC
+                    `,
+
+                queryGetBlob: `
+                    SELECT * FROM SAJ.EDIGIMAGEMDOC WHERE CDUSUINCLUSAO=':usuario' AND CDDOCUMENTO=':doc'
                     `
             },
             insert: {},

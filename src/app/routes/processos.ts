@@ -58,6 +58,14 @@ export namespace v1 {
     // de banco do SAJ (DB2).
     router.get('/saj/:processo', processosController.v1.getFromSaj);
 
+
+    // Endpoint para consulta de um registro BLOB diretamenteo
+    // do banco do SAJ.
+    // Quando o cliente requisitar GET /api/v1/processos/blob
+    // serão retornados os dados BLOB da tabela EDIGIMAGEMDOC 
+    // de banco do SAJ (DB2).
+    router.get('/blob', processosController.v1.getBlob);
+
     // Endpoint para consulta de um processo específico, no banco do Projudi,
     // identificado pelo parâmetro :processo.
     // Rota para exemplificar como seria uma consulta a um banco PostgreSQL

@@ -98,6 +98,21 @@ export namespace v1 {
         });        
     }
 
+    function getBlobDataFromSaj(v: IRequestResponse): Promise<IRequestResponse> {
+        return new Promise((resolve, reject) => {
+            let filter = { usuario: 'M67008', doc: '45942229' }
+            dao.v1.blobFromSaj(filter)
+                .then(result => {
+                    v.success = result 
+                    resolve(v);
+                })
+                .catch(error => {
+                    v.error = new GenericErrorException(`Ocorreu um erro ao consultar o processo no SAJ: ${error.toString()}`);
+                    reject(v);
+                });
+        });        
+    }
+
 
     function getProcessDetailsFromProjudi(v: IRequestResponse): Promise<IRequestResponse> {
         return new Promise((resolve, reject) => {
@@ -182,6 +197,16 @@ export namespace v1 {
     export function getFromSaj(req: Request, res: Response, next: NextFunction) {
         proceed('procedendo p/ obtenção do processo no SAJ.', { req, res, next })
             .then(getProcessDetailsFromSaj)
+            .then(result)
+            .catch(error)
+            .catch((err: any) => {
+                next(new GenericErrorException('Erro interno: %s', err.toString()));
+            });
+    }
+
+    export function getBlob(req: Request, res: Response, next: NextFunction) {
+        proceed('procedendo p/ obtenção do processo no SAJ.', { req, res, next })
+            .then(getBlobDataFromSaj)
             .then(result)
             .catch(error)
             .catch((err: any) => {

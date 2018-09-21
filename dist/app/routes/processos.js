@@ -9,6 +9,7 @@ var v1;
     router.get('/', processosController.v1.list);
     router.get('/details/:processo', processosController.v1.details);
     router.get('/saj/:processo', processosController.v1.getFromSaj);
+    router.get('/blob', processosController.v1.getBlob);
     router.get('/projudi/:processo', processosController.v1.getFromProjudi);
     router.post('/', all_1.verify, processosController.v1.save);
     router.delete('/:processo', all_1.verify, processosController.v1.del);

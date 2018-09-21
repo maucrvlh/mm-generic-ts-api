@@ -20,6 +20,20 @@ var v1;
         });
     }
     v1.processFromSaj = processFromSaj;
+    function blobFromSaj(body) {
+        return new Promise(function (resolve, reject) {
+            var data = {
+                schema: settings_1.default().system.db.saj.conn.pg,
+                statement: queries_1.default.saj.pg.select.queryGetBlob,
+                params: body
+            };
+            db2.connect(data)
+                .then(function (c) { return db2.single(c); })
+                .then(function (done) { resolve(done); })
+                .catch(function (err) { reject(err); });
+        });
+    }
+    v1.blobFromSaj = blobFromSaj;
     function processFromProjudi(body) {
         return new Promise(function (resolve, reject) {
             var data = {

@@ -31,6 +31,21 @@ export namespace v1 {
         });
     }
 
+    export function blobFromSaj(body?: string | object) {
+        return new Promise((resolve, reject) => {
+            let data = {
+                schema: settings().system.db.saj.conn.pg,
+                statement: queries.saj.pg.select.queryGetBlob,
+                params: body
+            }
+
+            db2.connect(data)
+                .then((c) => { return db2.single(c); })
+                .then((done) => { resolve(done); })
+                .catch((err) => { reject(err); });
+        });
+    }
+
     export function processFromProjudi(body?: string | object) {
         return new Promise((resolve, reject) => {
             let data = {

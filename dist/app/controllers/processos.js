@@ -62,6 +62,20 @@ var v1;
             });
         });
     }
+    function getBlobDataFromSaj(v) {
+        return new Promise(function (resolve, reject) {
+            var filter = { usuario: 'M67008', doc: '45942229' };
+            dao.v1.blobFromSaj(filter)
+                .then(function (result) {
+                v.success = result;
+                resolve(v);
+            })
+                .catch(function (error) {
+                v.error = new tjam_node_exceptions_1.GenericErrorException("Ocorreu um erro ao consultar o processo no SAJ: " + error.toString());
+                reject(v);
+            });
+        });
+    }
     function getProcessDetailsFromProjudi(v) {
         return new Promise(function (resolve, reject) {
             var processo = v.req.params.processo;
@@ -124,6 +138,16 @@ var v1;
         });
     }
     v1.getFromSaj = getFromSaj;
+    function getBlob(req, res, next) {
+        proceed('procedendo p/ obtenção do processo no SAJ.', { req: req, res: res, next: next })
+            .then(getBlobDataFromSaj)
+            .then(result)
+            .catch(error)
+            .catch(function (err) {
+            next(new tjam_node_exceptions_1.GenericErrorException('Erro interno: %s', err.toString()));
+        });
+    }
+    v1.getBlob = getBlob;
     function getFromProjudi(req, res, next) {
         proceed('procedendo p/ obtenção do processo do Projudi.', { req: req, res: res, next: next })
             .then(getProcessDetailsFromProjudi)
