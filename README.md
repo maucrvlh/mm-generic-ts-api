@@ -1,16 +1,16 @@
-<h1 align="center">TJAM - Web Services Apps</h1>
+<h1 align="center">WebServices Skeleton</h1>
 
 ---
 
-:fire: Estrutura base do Web Services Apps TJAM
+:fire: Estrutura base de webservices em Node.js
 
 
 ## Minitutorial rápido
-0. - no local de sua preferência, cria um diretório para o projeto (exemplo: /home/usuario/projects/projeto_nodejs_tjam)
+0. - no local de sua preferência, cria um diretório para o projeto (exemplo: /home/usuario/projects/projeto_nodejs)
 
 1. - clone o repositório do projeto na sua máquina no diretório do projeto criado anteriormente
 
-2. - faça a instalação do driver db2 conforme as instruções em [TJAM Node DB2 Helper](http://git.tjam.jus.br/local-node-modules/tjam-node-db2-helper)
+2. - faça a instalação do driver db2 conforme as instruções em [MM Node DB2 Helper](https://github.com/maucrvlh/mm-node-db2-helper)
 
 3. - crie algumas variáveis de ambiente no seu arquivo ".bash_profile" (geralmente localizado em $HOME ou /Users/{SeuUsuario}), é só escrever esses exports no arquivo e salvar. 
     1. `IBM_DB_HOME` apontando para o local onde você baixou o driver db2, exemplo:
@@ -42,16 +42,16 @@
     $ yarn
     ```
 
-6. - baixe o repositório do path shared que está em http://git.tjam.jus.br/scaffolding/tjam-generic-shared-itens com o nome `shared` no diretório do PROJETO, e não da API. Exemplo:
+6. - baixe o repositório do path shared que está em https://github.com/maucrvlh/mm-generic-shared-itens.git com o nome `shared` no diretório do PROJETO, e não da API. Exemplo:
     ```
-    $ cd /home/usuario/projects/projeto_nodejs_tjam
-    $ git clone http://git.tjam.jus.br/scaffolding/tjam-generic-shared-itens shared
+    $ cd /home/usuario/projects/projeto_nodejs
+    $ git clone https://github.com/maucrvlh/scaffolding/mm-generic-shared-itens shared
     ```
 
-7. - baixe o repositório de itens de suporte de APIs que está em http://git.tjam.jus.br/SupportServices/shared. Preferencialmente fora do projeto, com o nome `support` ou outro de sua preferência. Exemplo:
+7. - baixe o repositório de itens de suporte de APIs que está em https://github.com/maucrvlh/SupportServices.git. Preferencialmente fora do projeto, com o nome `support` ou outro de sua preferência. Exemplo:
     ```
     $ cd /home/usuario/projects/
-    $ git clone http://git.tjam.jus.br/SupportServices/shared support
+    $ git clone https://github.com/maucrvlh/SupportServices.git support
     ```
 
 8. - dentro do projeto, dentro da API, no arquivo `src/config/settings.ts`, ajuste as linhas 119, 120, 131 e 134 apontando para o diretório correto configurado no item anterior.

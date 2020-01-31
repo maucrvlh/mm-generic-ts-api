@@ -1,5 +1,5 @@
 {
-  "name": "tjam-generic-ts-api",
+  "name": "generic-ts-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -24,11 +24,11 @@
     "knex": "^0.14.2",
     "method-override": "^2.3.10",
     "sqlite3": "^3.1.13",
-    "tjam-node-db2-helper": "http://git.tjam.jus.br/local-node-modules/tjam-node-db2-helper.git#v1.0.1",
-    "tjam-node-exceptions": "http://git.tjam.jus.br/local-node-modules/tjam-node-exceptions.git#v1.0.4",
-    "tjam-node-log-utils": "http://git.tjam.jus.br/local-node-modules/tjam-node-log-utils.git#v1.0.1",
-    "tjam-node-pg-helper": "http://git.tjam.jus.br/local-node-modules/tjam-node-pg-helper.git#v1.0.1",
-    "tjam-node-toolbox": "http://git.tjam.jus.br/local-node-modules/tjam-node-toolbox.git#v1.0.0",
+    "tjam-node-db2-helper": "https://github.com/maucrvlh/mm-node-db2-helper.git#v1.0.1",
+    "tjam-node-exceptions": "https://github.com/maucrvlh/mm-node-exceptions.git#v1.0.4",
+    "tjam-node-log-utils": "https://github.com/maucrvlh/mm-node-log-utils.git#v1.0.1",
+    "tjam-node-pg-helper": "https://github.com/maucrvlh/mm-node-pg-helper.git#v1.0.1",
+    "tjam-node-toolbox": "https://github.com/maucrvlh/mm-node-toolbox.git#v1.0.0",
     "unirest": "^0.5.1"
   }
 }
